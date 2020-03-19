@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<head>
+    <link rel="manifest" href="/manifest.json">
+</head>
+<body>
+    <div>
+        my first PWA :)
+    </div>
+</body>
+<script>
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker
+           .register('/sw.js')
+           .then(function() { console.log("Service Worker Registered"); });
+}
+
+var savedPrompt = null;
+
+window.addEventListener('beforeinstallprompt', beforeInstallPrompt);
+
+function beforeInstallPrompt(event) {
+   event.preventDefault();
+   savedPrompt = event;
+   //이곳에 여러분의 어플리케이션을 홈 스크린에 추가하기 위한 UI를 보여주는 로직을 구현하세요 (아마도 버튼이겠죠)
+}
+
+//유저가 여러분의 UI에서 버튼을 클릭했을 때 이 메서드를 호출하세요
+function userClickedAddToHome() {
+   savedPrompt.prompt();
+   
+   savedPrompt.userChoice
+    .then(function(choiceResult){
+  if (choiceResult.outcome === 'accepted') {
+    //유저가 홈 스크린에 어플리케이션 추가에 동의
+  } else {
+    //유저가 홈 스크린에 어플리케이션 추가를 거부
+  }
+  savedPrompt = null;
+});
+}
+</script>
